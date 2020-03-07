@@ -1,0 +1,14 @@
+BEGIN;
+
+CREATE EXTENSION IF NOT EXISTS unaccent;
+
+CREATE TABLE IF NOT EXISTS comic (
+  id SERIAL PRIMARY KEY,
+  text TEXT,
+  url TEXT UNIQUE,
+  trigrams TSVECTOR
+);
+
+CREATE INDEX IF NOT EXISTS comic_trgm_idx ON comic USING GIN (trigrams);
+
+COMMIT;
