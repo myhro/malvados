@@ -1,8 +1,7 @@
+BINARY_FOLDER := ./dist
+
 build:
-	go build -o ocr ocr.go
+	go build -o $(BINARY_FOLDER)/ocr ./cmd/ocr
 
 clean:
-	rm ocr
-
-deps:
-	dep ensure
+	rm -rf $(BINARY_FOLDER)

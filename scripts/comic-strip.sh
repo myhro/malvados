@@ -38,7 +38,7 @@ if [[ "$COMMAND" = "convert" ]]; then
         TEXT="${f//$EXT/.txt}"
         [[ -f "$TEXT" ]] && continue
         echo "$TEXT"
-        ./ocr "$f" > "$TEXT"
+        ../dist/ocr "$f" > "$TEXT"
     done
 elif [[ "$COMMAND" = "fetch" ]]; then
     INDEX_PAGE=$(curl -s "$BASE_URL")
