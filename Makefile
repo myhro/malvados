@@ -1,3 +1,4 @@
+API_FOLDER := ./api
 BINARY_FOLDER := ./dist
 IMPORT_FOLDER := ./cmd/import
 MIGRATION_FOLDER := ./sql/migrations
@@ -5,9 +6,15 @@ POSTGRES_URL ?= postgres:///malvados?sslmode=disable
 
 export GOBIN := $(PWD)/.bin
 
+.PHONY: api
+
+api:
+	go run $(API_FOLDER)
+
 build:
-	go build -o $(BINARY_FOLDER)/ocr ./cmd/ocr
+	go build -o $(BINARY_FOLDER)/api $(API_FOLDER)
 	go build -o $(BINARY_FOLDER)/import $(IMPORT_FOLDER)
+	go build -o $(BINARY_FOLDER)/ocr ./cmd/ocr
 
 clean:
 	rm -rf $(BINARY_FOLDER)

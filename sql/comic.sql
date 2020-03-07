@@ -23,3 +23,18 @@ INSERT INTO comic (text, url, trigrams)
     FROM list
     ORDER BY id
 ;
+
+-- name: search
+SELECT
+    id,
+    ts_headline(
+      'portuguese',
+      text,
+      to_tsquery('portuguese', unaccent($1)),
+      'HighlightAll = true'
+    ) AS text,
+    url
+  FROM comic
+  WHERE trigrams @@ to_tsquery('portuguese', unaccent($1))
+  ORDER BY id DESC
+;
