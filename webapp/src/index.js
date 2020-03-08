@@ -22,6 +22,7 @@ class App extends React.Component {
     this.search = this.search.bind(this);
 
     this.state = {
+      checked: false,
       loader: false,
       results: [],
       value: '',
@@ -34,9 +35,12 @@ class App extends React.Component {
   }
 
   handleFocus() {
-    let results = [];
-    let value = '';
-    this.setState({ results, value });
+    let state = {
+      checked: false,
+      results: [],
+      value: '',
+    };
+    this.setState(state);
   }
 
   handleKeyDown(event) {
@@ -53,8 +57,9 @@ class App extends React.Component {
     let res = await fetch(url);
     let results = await res.json();
     this.setState({ loader: false });
+    let checked = true;
 
-    this.setState({ results });
+    this.setState({ checked, results });
   }
 
   render() {
@@ -70,7 +75,11 @@ class App extends React.Component {
           onFocus={this.handleFocus}
           onKeyDown={this.handleKeyDown}
         />
-        <Result items={this.state.results} loader={this.state.loader} />
+        <Result
+          checked={this.state.checked}
+          items={this.state.results}
+          loader={this.state.loader}
+        />
       </div>
     );
   }

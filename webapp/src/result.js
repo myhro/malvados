@@ -34,6 +34,8 @@ class Result extends React.Component {
           </div>
         </div>
       );
+    } else if (this.props.checked == true && this.props.items.length == 0) {
+      return <h4>Nenhum resultado encontrado</h4>;
     } else if (this.props.items.length > 0) {
       return (
         <div className="row left-align">
