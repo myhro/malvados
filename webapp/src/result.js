@@ -18,7 +18,23 @@ class Result extends React.Component {
   }
 
   render() {
-    if (this.props.items.length > 0) {
+    if (this.props.loader == true) {
+      return (
+        <div className="preloader-wrapper big active">
+          <div className="spinner-layer">
+            <div className="circle-clipper left">
+              <div className="circle"></div>
+            </div>
+            <div className="gap-patch">
+              <div className="circle"></div>
+            </div>
+            <div className="circle-clipper right">
+              <div className="circle"></div>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (this.props.items.length > 0) {
       return (
         <div className="row left-align">
           <div className="col l8 offset-l2 s10 offset-s1">

@@ -22,6 +22,7 @@ class App extends React.Component {
     this.search = this.search.bind(this);
 
     this.state = {
+      loader: false,
       results: [],
       value: '',
     };
@@ -48,8 +49,10 @@ class App extends React.Component {
     let url = new URL(`${location.protocol}//${process.env.API_URL}`);
     url.searchParams.append('q', this.state.value);
 
+    this.setState({ loader: true });
     let res = await fetch(url);
     let results = await res.json();
+    this.setState({ loader: false });
 
     this.setState({ results });
   }
@@ -67,7 +70,7 @@ class App extends React.Component {
           onFocus={this.handleFocus}
           onKeyDown={this.handleKeyDown}
         />
-        <Result items={this.state.results} />
+        <Result items={this.state.results} loader={this.state.loader} />
       </div>
     );
   }
