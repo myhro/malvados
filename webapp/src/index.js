@@ -21,12 +21,17 @@ class App extends React.Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.search = this.search.bind(this);
 
-    this.state = {
+    this.state = this.cleanState();
+  }
+
+  cleanState() {
+    let state = {
       checked: false,
       loader: false,
       results: [],
       value: '',
     };
+    return state;
   }
 
   handleChange(event) {
@@ -35,11 +40,7 @@ class App extends React.Component {
   }
 
   handleFocus() {
-    let state = {
-      checked: false,
-      results: [],
-      value: '',
-    };
+    let state = this.cleanState();
     this.setState(state);
   }
 
