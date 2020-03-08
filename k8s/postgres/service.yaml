@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: malvados-<ENV>-postgres
+spec:
+  selector:
+    app: malvados-<ENV>-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

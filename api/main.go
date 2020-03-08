@@ -29,7 +29,7 @@ func main() {
 
 	port := ":8080"
 	if gin.Mode() == gin.ReleaseMode {
-		log.Printf("Starting server on port ", port)
+		log.Print("Starting server on port ", port)
 	}
 	r.Run(port)
 }
