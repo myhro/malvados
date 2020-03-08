@@ -12,11 +12,13 @@ import (
 	"github.com/nleof/goyesql"
 )
 
+// Handler holds objects to be reused between requests, like a database connection
 type Handler struct {
 	DB      storage.DB
 	Queries goyesql.Queries
 }
 
+// NewHandler returns a new Handler
 func NewHandler(db storage.DB) (*Handler, error) {
 	queries, err := goyesql.ParseFile("sql/comic.sql")
 	if err != nil {
@@ -36,6 +38,7 @@ func queryToFTS(q string) string {
 	return strings.Join(words, " & ")
 }
 
+// Search returns the results for a search query
 func (h *Handler) Search(c *gin.Context) {
 	q := c.Query("q")
 	if q == "" {

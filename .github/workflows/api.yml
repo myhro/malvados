@@ -1,0 +1,57 @@
+---
+name: API
+"on": [push]
+jobs:
+  check:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+      - uses: actions/checkout@v1
+      - name: Check
+        run: |
+          make deps
+          make lint
+  build:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+      - uses: actions/checkout@v1
+      - name: Build
+        run: |
+          make build
+  docker:
+    needs: build
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: azure/docker-login@v1
+        with:
+          username: ${{ secrets.DOCKER_LOGIN }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Docker
+        run: |
+          make docker
+          make push
+  deploy:
+    needs: docker
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Credentials
+        env:
+          KUBECTL_CFG: ${{ secrets.KUBECTL_CFG }}
+        run: |
+          mkdir -p $HOME/.kube
+          echo "$KUBECTL_CFG" > $HOME/.kube/config
+          kubectl version
+      - name: Deploy
+        env:
+          ENV: staging
+          HOST: malvados-api.myhro.net
+        run: |
+          make deploy

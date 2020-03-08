@@ -27,6 +27,7 @@ create:
 	@$(GOBIN)/migrate create -dir $(MIGRATION_FOLDER) -ext sql -seq $(name)
 
 deps:
+	go install golang.org/x/lint/golint
 	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate
 
 deploy:
@@ -41,6 +42,9 @@ docker:
 
 import:
 	go run $(IMPORT_FOLDER)
+
+lint:
+	@$(GOBIN)/golint -set_exit_status ./...
 
 migrate:
 	@$(GOBIN)/migrate -database $(POSTGRES_URL) -path $(MIGRATION_FOLDER) up
