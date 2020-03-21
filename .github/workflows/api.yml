@@ -55,3 +55,22 @@ jobs:
           HOST: malvados-api.myhro.net
         run: |
           make deploy
+  deploy-prod:
+    if: github.ref == 'refs/heads/master'
+    needs: docker
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Credentials
+        env:
+          KUBECTL_CFG: ${{ secrets.KUBECTL_CFG }}
+        run: |
+          mkdir -p $HOME/.kube
+          echo "$KUBECTL_CFG" > $HOME/.kube/config
+          kubectl version
+      - name: Deploy
+        env:
+          ENV: prod
+          HOST: malvados-api.myhro.info
+        run: |
+          make deploy
