@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Result from './result';
-import Search from './search';
+import { cleanURL, Search, updateURL } from './search';
 
 import logo from './img/logo.jpg';
 
@@ -34,14 +34,28 @@ class App extends React.Component {
     return state;
   }
 
-  handleChange(event) {
+  async componentDidMount() {
+    let params = new URLSearchParams(window.location.search);
+    let query = params.get('q');
+    if (query !== null) {
+      await this.setState({ value: query });
+      this.search();
+    }
+  }
+
+  async handleChange(event) {
     let value = event.target.value;
-    this.setState({ value });
+    await this.setState({ value });
+
+    if (value.length >= 3) {
+      this.search();
+    }
   }
 
   handleFocus() {
     let state = this.cleanState();
     this.setState(state);
+    cleanURL();
   }
 
   handleKeyDown(event) {
@@ -51,6 +65,8 @@ class App extends React.Component {
   }
 
   async search() {
+    updateURL(this.state.value);
+
     let url = new URL(`${location.protocol}//${process.env.API_URL}`);
     url.searchParams.append('q', this.state.value);
 

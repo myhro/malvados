@@ -1,6 +1,19 @@
 import React from 'react';
 
-class Search extends React.Component {
+export function cleanURL() {
+  setURL(window.location.pathname);
+}
+
+function setURL(url) {
+  window.history.pushState(null, '', url);
+}
+
+export function updateURL(value) {
+  let url = window.location.pathname + '?q=' + value;
+  setURL(url);
+}
+
+export class Search extends React.Component {
   render() {
     return (
       <div className="row">
@@ -17,5 +30,3 @@ class Search extends React.Component {
     );
   }
 }
-
-export default Search;
