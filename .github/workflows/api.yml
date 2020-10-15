@@ -50,9 +50,6 @@ jobs:
           echo "$KUBECTL_CFG" > $HOME/.kube/config
           kubectl version
       - name: Deploy
-        env:
-          ENV: staging
-          HOST: malvados-api.myhro.net
         run: |
           make deploy
   deploy-prod:
@@ -71,6 +68,6 @@ jobs:
       - name: Deploy
         env:
           ENV: prod
-          HOST: malvados-api.myhro.info
+          TUNNEL: 3f766ce3-9da3-4882-959d-ee8c61488956
         run: |
           make deploy

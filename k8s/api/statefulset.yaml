@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: malvados-<ENV>-api-tunnel
+spec:
+  selector:
+    matchLabels:
+      app: malvados-<ENV>-api-tunnel
+  serviceName: malvados-<ENV>-api-tunnel
+  template:
+    metadata:
+      labels:
+        app: malvados-<ENV>-api-tunnel
+    spec:
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:2020.10.0
+          command:
+            - cloudflared
+            - tunnel
+            - run
+            - <TUNNEL>
+          env:
+            - name: NO_AUTOUPDATE
+              value: "true"
+            - name: TUNNEL_URL
+              value: http://malvados-<ENV>-api:8080
+          volumeMounts:
+            - mountPath: /etc/cloudflared
+              name: cloudflared
+      volumes:
+        - name: cloudflared
+          secret:
+            secretName: malvados-<ENV>-api-tunnel
