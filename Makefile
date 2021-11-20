@@ -29,8 +29,8 @@ create:
 	@$(GOBIN)/migrate create -dir $(MIGRATION_FOLDER) -ext sql -seq $(name)
 
 deps:
-	go install golang.org/x/lint/golint
-	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate
+	go install golang.org/x/lint/golint@latest
+	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.15.1
 
 deploy:
 	find k8s/ -name '*.yaml' -exec sed 's/<ENV>/$(ENV)/;s/<TUNNEL>/$(TUNNEL)/;s/<VERSION>/$(VERSION)/' {} \; > $(DEPLOY_FILE)
