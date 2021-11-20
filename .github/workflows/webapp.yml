@@ -27,5 +27,4 @@ jobs:
         run: |
           cd webapp/
           make deps
-          make env
           make build

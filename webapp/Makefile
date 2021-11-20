@@ -1,15 +1,10 @@
-PARCEL_ENTRYPOINT := src/index.html
-PRETTIER_FILES := src/*.js
+API_URL ?= 127.0.0.1:8080
 
-build:
-	npm run parcel -- build $(PARCEL_ENTRYPOINT)
-
-build-prod: clean env-prod build
-
-build-staging: clean env-staging build
+build: env
+	npx parcel build src/index.html
 
 check:
-	npm run prettier -- --check $(PRETTIER_FILES)
+	npx prettier --check src/*.js
 
 clean:
 	rm -rf .cache/ dist/ .env
@@ -18,22 +13,16 @@ deps:
 	npm ci
 
 env:
-	echo "API_URL=127.0.0.1:8080" > .env
-
-env-prod:
-	echo "API_URL=malvados-api.myhro.info" > .env
-
-env-staging:
-	echo "API_URL=malvados-api.myhro.net" > .env
+	echo "API_URL=$(API_URL)" > .env
 
 lint:
-	npm run eslint
+	npx eslint src/*.js
 
 prettier:
-	npm run prettier -- --write $(PRETTIER_FILES)
+	npx prettier --write src/*.js
 
 serve:
-	npm run serve
+	npx serve dist/
 
 watch: clean env
-	npm run parcel -- $(PARCEL_ENTRYPOINT)
+	npx parcel src/index.html
