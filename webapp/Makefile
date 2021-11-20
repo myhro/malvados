@@ -14,12 +14,6 @@ check:
 clean:
 	rm -rf .cache/ dist/ .env
 
-deploy: build-staging
-	npm run wrangler -- publish
-
-deploy-prod: build-prod
-	npm run wrangler -- publish --env production
-
 deps:
 	npm ci
 
