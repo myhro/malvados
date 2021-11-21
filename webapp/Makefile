@@ -1,7 +1,8 @@
 API_URL ?= 127.0.0.1:8080
+PARCEL_FILES := src/index.html src/404.html
 
 build: env
-	npx parcel build src/index.html
+	npx parcel build $(PARCEL_FILES)
 
 check:
 	npx prettier --check src/*.js
@@ -25,4 +26,4 @@ serve:
 	npx serve dist/
 
 watch: clean env
-	npx parcel src/index.html
+	npx parcel $(PARCEL_FILES)
