@@ -1,11 +1,9 @@
 API_FOLDER := ./api
 BINARY_FOLDER := ./dist
 BUILD_FLAGS := -ldflags "-s -w"
-IMAGE := myhro/malvados
 IMPORT_FOLDER := ./cmd/import
 MIGRATION_FOLDER := ./sql/migrations
 POSTGRES_URL ?= postgres:///malvados?sslmode=disable
-VERSION ?= $(shell git rev-parse --short HEAD)
 
 export GOBIN := $(PWD)/.bin
 
@@ -32,9 +30,6 @@ deps:
 destroy:
 	@$(GOBIN)/migrate -database $(POSTGRES_URL) -path $(MIGRATION_FOLDER) down -all
 
-docker:
-	docker build -t $(IMAGE) .
-
 import:
 	go run $(IMPORT_FOLDER)
 
@@ -43,8 +38,3 @@ lint:
 
 migrate:
 	@$(GOBIN)/migrate -database $(POSTGRES_URL) -path $(MIGRATION_FOLDER) up
-
-push:
-	docker tag $(IMAGE):latest $(IMAGE):$(VERSION)
-	docker push $(IMAGE):$(VERSION)
-	docker push $(IMAGE):latest
