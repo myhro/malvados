@@ -1,5 +1,3 @@
-/* global process */
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -66,17 +64,27 @@ class App extends React.Component {
 
   async search() {
     updateURL(this.state.value);
+    if (this.state.value.length < 3) {
+      return;
+    }
 
-    let url = new URL(`${location.protocol}//${process.env.API_URL}`);
-    url.searchParams.append('q', this.state.value);
+    let url = new URL('https://DTD8D9ZX1P-dsn.algolia.net/1/indexes/malvados');
+    url.searchParams.append('hitsPerPage', 10);
+    url.searchParams.append('query', this.state.value);
+
+    const init = {
+      headers: {
+        'X-Algolia-API-Key': 'fdb867640151ff9a31a4a546050062cb',
+        'X-Algolia-Application-Id': 'DTD8D9ZX1P',
+      },
+    };
 
     this.setState({ loader: true });
-    let res = await fetch(url);
-    let results = await res.json();
+    let res = await fetch(url, init);
+    let json = await res.json();
     this.setState({ loader: false });
-    let checked = true;
 
-    this.setState({ checked, results });
+    this.setState({ checked: true, results: json.hits });
   }
 
   render() {

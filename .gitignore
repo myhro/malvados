@@ -2,5 +2,4 @@
 .parcel-cache/
 dist/
 node_modules/
-.env
 deploy-k8s.yaml
