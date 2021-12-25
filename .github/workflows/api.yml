@@ -37,37 +37,3 @@ jobs:
         run: |
           make docker
           make push
-  deploy:
-    needs: docker
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v1
-      - name: Credentials
-        env:
-          KUBECTL_CFG: ${{ secrets.KUBECTL_CFG }}
-        run: |
-          mkdir -p $HOME/.kube
-          echo "$KUBECTL_CFG" > $HOME/.kube/config
-          kubectl version
-      - name: Deploy
-        run: |
-          make deploy
-  deploy-prod:
-    if: github.ref == 'refs/heads/master'
-    needs: docker
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v1
-      - name: Credentials
-        env:
-          KUBECTL_CFG: ${{ secrets.KUBECTL_CFG }}
-        run: |
-          mkdir -p $HOME/.kube
-          echo "$KUBECTL_CFG" > $HOME/.kube/config
-          kubectl version
-      - name: Deploy
-        env:
-          ENV: prod
-          TUNNEL: 3f766ce3-9da3-4882-959d-ee8c61488956
-        run: |
-          make deploy

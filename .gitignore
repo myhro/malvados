@@ -2,4 +2,3 @@
 .parcel-cache/
 dist/
 node_modules/
-deploy-k8s.yaml
